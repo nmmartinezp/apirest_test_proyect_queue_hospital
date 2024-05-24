@@ -7,3 +7,6 @@ Code implementation based on the design of domino class diagrams and collaborati
 
 ### `Project members`
 - Martinez Pardo Nisse Maximiliano
+- Barañado Mendez Alexander Nahuel
+- Rojas Vasquez Sheila
+- Cerezo Guzman Soledad
