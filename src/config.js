@@ -1,6 +1,6 @@
 module.exports = {
     app: {
-        port: process.env.SEVER_PORT || 4000,
+        port: process.env.SERVER_PORT || 4000,
     },
     pgsql_queues: {
         host: process.env.PGSQL_HOST_QUEUES || 'localhost',

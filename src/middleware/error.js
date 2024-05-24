@@ -3,8 +3,15 @@ const { error } = require('./response');
 
 exports.errors = function (err, req, res, next){
     const message = err.message;
+    const errors = [
+        "Error trying to get",
+        "Error trying to add",
+        "Error trying to update",
+        "Error trying to delete",
+        "not found"
+    ];
 
-    if(message.includes("Error trying to get")){
+    if(errors.some(err => message.includes(err))){
         next(boom.conflict(err.message));
     }else{
         next(boom.internal(err.message));

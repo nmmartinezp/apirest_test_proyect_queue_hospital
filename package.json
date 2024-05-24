@@ -7,7 +7,7 @@
     "dev": "node --env-file .env --watch ./src/index.js",
     "start": "node ./src/index.js"
   },
-  "author": "Martinez Nisse",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "@hapi/boom": "^10.0.1",

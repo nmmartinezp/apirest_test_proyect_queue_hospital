@@ -1,9 +1,18 @@
 const express = require("express");
-const config = require("./config");
 const morgan = require("morgan");
+
+const config = require("./config");
 const pgSequelize = require("./database/pgsqlQueue");
 const { errors, response } = require("./middleware/error");
+
 const queueRouter = require("./routes/queueRoutes");
+const doctorRouter = require("./routes/doctorRoutes");
+const consulRouter = require("./routes/consultingRoomRoutes");
+const ticketRouter = require("./routes/ticketRoutes");
+const patientRouter = require("./routes/patientRoutes");
+const doctorQueueRouter = require("./routes/doctorQueueRoutes");
+
+require("./model");
 
 const app = express();
 
@@ -20,13 +29,26 @@ pgSequelize
     console.error("Unable to connect to the database:", err);
   });
 
+pgSequelize.sync()
+.then(() => {
+  console.log("Sincronyzed.");
+})
+.catch((err) => {
+  console.error("Unable Sincronyzed:", err);
+});
+
 //middleware
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
-app.use('/queue', queueRouter);
+app.use('/app', queueRouter);
+app.use('/app', doctorRouter);
+app.use('/app', consulRouter);
+app.use('/app', ticketRouter);
+app.use('/app', patientRouter);
+app.use('/app', doctorQueueRouter);
 
 //middlware errors
 app.use(errors);

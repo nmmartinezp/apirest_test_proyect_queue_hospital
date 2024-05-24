@@ -12,17 +12,34 @@ const Ticket = pgSequelize.define('ticket', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    patient: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    ci: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    date: {
+    emition_date: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    status: {
+        type: DataTypes.STRING(25),
+        allowNull: false,
+        defaultValue: "issued",
+        validate: {
+            isIn: {
+                args: [[
+                    "issued", "called", "turn", "canceled", "ready", "deleted"
+                ]]
+            }
+        }
+    },
+    presentation_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    id_doctor: {
+        type: DataTypes.INTEGER,
+    },
+    id_queue: {
+        type: DataTypes.INTEGER,
+    },
+    id_patient: {
+        type: DataTypes.INTEGER,
     }
 },{
     timestamps: false,

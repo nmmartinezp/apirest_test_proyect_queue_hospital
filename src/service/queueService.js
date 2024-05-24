@@ -1,19 +1,70 @@
-const Ticket = require("../model/ticket");
+const { Queue, Doctor} = require("../model");
+const sequelize = require("../database/pgsqlQueue");
 
 class QueueService {
-  async getAllOfTickets() {
+  async getAllQueues(){
     try {
-      return await Ticket.findAll();
+      return await Queue.findAll({
+        include: {
+          model: Doctor,
+          as: "doctorQueue"
+        }
+      });
     } catch (err) {
-      throw new Error("Error trying to get all tickets");
+      throw new Error("Error trying to get all queues");
     }
   }
 
-  async getTicketsByCriterion(criteria) {
+  async addQueue(data){
     try {
-      return await Ticket.findAll({ where: criteria });
+      return await sequelize.transaction(async (t) => {
+        const created = await Queue.create(data, { transaction: t });
+        return {
+          create: true,
+          created: created,
+        };
+      });
     } catch (err) {
-      throw new Error("Error trying to get one ticket by criterion");
+      throw new Error("Error trying to add a new queue");
+    }
+  }
+
+  async modifyQueue(idQueue, data){
+    try {
+      return await sequelize.transaction(async (t) => {
+        const nro = await Queue.update(data, {
+          where: {
+            id: idQueue,
+          },
+          transaction: t,
+        });
+        return {
+          update: true,
+          NroUpdateds: nro,
+        };
+      });
+    } catch (err) {
+      throw new Error("Error trying to update a queue");
+    }
+  }
+
+  async deleteQueue(idQueue){
+    try {
+      return await sequelize.transaction(async (t) => {
+        const nro = await Queue.destroy({
+          where: {
+            id: idQueue
+          },
+          transaction: t
+        });
+
+        return {
+          delete: true,
+          NroDeleteds: nro,
+        };
+      });
+    } catch (err) {
+      throw new Error("Error trying to delete a queue");
     }
   }
 }
