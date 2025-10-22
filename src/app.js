@@ -29,13 +29,14 @@ pgSequelize
     console.error("Unable to connect to the database:", err);
   });
 
-pgSequelize.sync()
-.then(() => {
-  console.log("Sincronyzed.");
-})
-.catch((err) => {
-  console.error("Unable Sincronyzed:", err);
-});
+pgSequelize
+  .sync()
+  .then(() => {
+    console.log("Sincronyzed.");
+  })
+  .catch((err) => {
+    console.error("Unable Sincronyzed:", err);
+  });
 
 //middleware
 app.use(morgan("dev"));
@@ -43,12 +44,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
-app.use('/app', queueRouter);
-app.use('/app', doctorRouter);
-app.use('/app', consulRouter);
-app.use('/app', ticketRouter);
-app.use('/app', patientRouter);
-app.use('/app', doctorQueueRouter);
+app.use("/app", queueRouter);
+app.use("/app", doctorRouter);
+app.use("/app", consulRouter);
+app.use("/app", ticketRouter);
+app.use("/app", patientRouter);
+app.use("/app", doctorQueueRouter);
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 
 //middlware errors
 app.use(errors);
